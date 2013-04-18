@@ -127,7 +127,7 @@ end
 
 bot = Cinch::Bot.new do
   configure do |c|
-    c.nick = "bitzbotdev"
+    c.nick = "bitzbot"
     c.server = "irc.freenode.org"
     c.channels = ["#leihs", "#madek"]
     c.plugins.plugins = [Urls, Release, Help, Excuses]
