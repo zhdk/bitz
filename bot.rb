@@ -1,4 +1,5 @@
 require 'cinch'
+require 'pry'
 
 class Hello
   include Cinch::Plugin
@@ -99,13 +100,37 @@ class Release
   end
 end
 
+class Excuses
+  include Cinch::Plugin
+  listen_to :message, :method => :excuse_us
+
+  def excuse_us(m)
+
+    # The user asked a question
+    if m.message =~ /.*\?$/
+      # But there is no one here to answer
+      if m.channel.users.count == 3
+        m.user.send("Hi there. I am a bot that helps out in #{m.channel}.")
+        m.user.send("It seems that you've asked a question there, but there is no human logged on that could help you.")
+        m.user.send("Instead of wasting your time waiting for a response, please have another look at our software's documentation instead.")
+        m.user.send("You can get the URL by typing '!url docs' (without the quotes) in #{m.channel}.")
+        m.user.send("In case you've already read our documentation a million times and are really annoyed that something doesn't work, please accept my apologies, but I am just a little bot and can't really do anything to help you.")
+        m.user.send("Feel free to stick around the channel for a while to see if someone who is actually able to help you joins.")
+      end
+
+    end
+  end
+
+end
+
+
 
 bot = Cinch::Bot.new do
   configure do |c|
-    c.nick = "bitzbot"
+    c.nick = "bitzbotdev"
     c.server = "irc.freenode.org"
     c.channels = ["#leihs", "#madek"]
-    c.plugins.plugins = [Urls, Release, Help]
+    c.plugins.plugins = [Urls, Release, Help, Excuses]
   end
 end
 
